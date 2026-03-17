@@ -1,139 +1,259 @@
-/*
-	Name: listasEncadeadas.cpp
-	Author: Fabio.Fonts 
-	Date: 17/11/25 08:50
-	Description: implementação de lista encadeada
-*/
- #include<windows.h>
- #include<stdio.h>
- #include<conio.h>
- #include<locale.h>
- #include<stdlib.h>
- 
- typedef struct No
- {
- 	char nome[10];
- 	int idade;
- 	No *prox;
- };
- 
- //variavel global
- int tamanho; //tamanho da lista
- 
- //seção de prototipação
- 
- int Vazia(No *);
- No *alocaMemoria();
- void insereFim(No *);
- No *retiraFim(No *);
- void insereInicio(No *);
- No * retiraInicio(No *);
- void exibirLista(No *);
- void iniciarLista(No *);
- int menu();
- void tratarOpcao(No *); 
- 
- 
- 
- 
- main() //início do programa
- {
-    setlocale(LC_ALL,"portuguese");
-    
- No *Lista = (No *) malloc(sizeof(No));
- if(!Lista){
- 		printf("\nnão há espaço na memória pra criar lista\n");
- 		exit(1);
- }
- else{
- 	insereFim(Lista);
- }
- 
- 	
- } //fim do progama
- 
- //funçao para apresentar o menu
- 
- int menu()
- {
- 	;
- }
- 
- //função para tratar a escolha da opcao de menu
- void tratarOpcao()
- {
- 	;
- }
- //função para inicializar a lista
- void iniciarLista(No *Lista)
- {
- 	Lista->prox = NULL;
- 	tamanho = 0;
- }
- //função que testa se a lista está vazia
- 
- int Vazia(No *Lista)
- {
- 	if(Lista->prox == NULL)
- 		return 1;//está vazia
- 	else
-	 	return 0;	
- 	
- }
- 
- //função para alocação de memoria para um Nó
- No *alocaMemoria()
- {
- 	No *novo = (No *) malloc(sizeof(No));
- 	if(!novo){
- 		printf("\nnão há espaço na memória\n");
- 		exit(1);
-	 }
-	 else{
-	 	printf("nome: "); scanf("%s", &novo->nome);
-	 	
-	 	printf("idade: "); scanf("%s", &novo->idade);
-	 	return novo;
-	 }
- }
- //funcao para inserir um nó no fim da lista
- void insereFim(No *Lista){
- 	No *novo = alocaMemoria();
- 	novo->prox = novo;
- 	if(Vazia(Lista))
- 	Lista->prox;
- 	else{
- 		No *tmp = Lista->prox;
- 		while(tmp != NULL)
- 		tmp = tmp->prox;
- 		tmp->prox = novo;
-	 }
-	 tamanho++;
-	 puts("novo elemento inserido com sucesso");
- }
- 
- //imprimir lista
- 
- void exibirLista(No *Lista)
- {
- 	if(Vazia(Lista))
-		puts("----->>>>  lista vazia");
+#include<windows.h>
+#include<stdio.h>
+#include<conio.h>
+#include<locale.h>
+#include<stdlib.h>
+
+typedef struct No
+{
+	char nome[10];
+	int idade;
+	struct No *prox;
+} No;
+
+//variavel global
+int tamanho;
+
+//protÃ³tipos
+int Vazia(No *);
+No *alocaMemoria();
+void insereFim(No *);
+No *retiraFim(No *);
+void insereInicio(No *);
+No * retiraInicio(No *);
+void exibirLista(No *);
+void iniciarLista(No *);
+int menu();
+void tratarOpcao(No *, int); 
+
+main()
+{
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+	WORD saved_attributes;
+
+	GetConsoleScreenBufferInfo(hConsole,&consoleInfo);
+	saved_attributes = consoleInfo.wAttributes;
+	
+	setlocale(LC_ALL,"portuguese");
+
+	No *Lista = (No *) malloc(sizeof(No));
+
+	if(!Lista){
+		printf("\nnÃ£o hÃ¡ espaÃ§o na memÃ³ria pra criar lista\n");
+		exit(1);
+	}
+
+	iniciarLista(Lista);
+
+	int opc =0;
+
+	do{
+		opc = menu();
+		tratarOpcao(Lista, opc);
+			SetConsoleTextAttribute(hConsole,13);
+		system("pause");
+			SetConsoleTextAttribute(hConsole,7);
+		system("cls");
+	}while(opc);
+}
+
+int menu()
+{
+	int opc;
+
+	puts("1 - escolha sua opÃ§Ã£o");
+	puts("-=-=-=-=-=-=-=-=-=-");
+
+	printf("1 - zerar a lista\n");
+	printf("2 - exibir a lista\n");
+	printf("3 - inserir um elemento no final da lista\n");
+	printf("4 - inserir elemento no inÃ­cio da lista\n");
+	printf("5 - excluir um elemento do fim da lista\n");
+	printf("6 - excluir um elemento no inÃ­cio da lista\n");
+	printf("7 - finalizar o programa\n");
+
+	puts("-=-=-=-=-=-=-=-=-=-");
+
+	printf("opÃ§Ã£o: ");
+	scanf("%d", &opc);
+
+	return opc;
+}
+
+void tratarOpcao(No *Lista, int opc)
+{
+	switch(opc)
+	{
+		case 1:
+			iniciarLista(Lista);
+			break;
+
+		case 2:
+			exibirLista(Lista);
+			break;
+
+		case 3:
+			insereFim(Lista);
+			break;
+
+		case 4:
+			insereInicio(Lista);
+			break;
+
+		case 5:
+			retiraFim(Lista);
+			break;
+
+		case 6:
+		{
+			No *removido = retiraInicio(Lista);
+			if(removido != NULL)
+				free(removido);
+			break;
+		}
+
+		case 7:
+			exit(0);
+
+		default:
+			printf("opÃ§Ã£o estÃ¡ invÃ¡lida");						 		
+	}
+}
+
+void iniciarLista(No *Lista)
+{
+	Lista->prox = NULL;
+	tamanho = 0;
+}
+
+int Vazia(No *Lista)
+{
+	return (Lista->prox == NULL);
+}
+
+No *alocaMemoria()
+{
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+	WORD saved_attributes;
+
+	GetConsoleScreenBufferInfo(hConsole,&consoleInfo);
+	saved_attributes = consoleInfo.wAttributes;
+	
+	No *novo = (No *) malloc(sizeof(No));
+
+	if(!novo){
+		printf("\nnÃ£o hÃ¡ espaÃ§o na memÃ³ria\n");
+		exit(1);
+	}
+	SetConsoleTextAttribute(hConsole,3);
+	printf("nome: ");
+	SetConsoleTextAttribute(hConsole,7);
+	scanf("%s", novo->nome);
+	SetConsoleTextAttribute(hConsole,12);
+	printf("idade: ");
+	SetConsoleTextAttribute(hConsole,7);
+	scanf("%d", &novo->idade);
+
+	return novo;
+}
+
+void insereInicio(No *Lista)
+{
+	No *novo = alocaMemoria();
+	No *head = Lista->prox;
+	Lista->prox = novo;
+	novo->prox = head;
+	puts("No inserido no INICIO da Lista!!!");
+	tamanho++;
+}
+
+No * retiraInicio(No* Lista){
+	if(Lista->prox == NULL)  // CORRIGIDO AQUI
+	{
+		puts("a lista estÃ¡ vazia");
+		return NULL;
+	}	
+	else{
+		No* temp = Lista->prox;
+		Lista->prox = temp->prox;
+		tamanho--;
+		return temp;
+	}
+}
+
+No* retiraFim(No * Lista){
+	if(Lista->prox == NULL)
+	{
+		puts("a lista estÃ¡ vazia");
+		return NULL;
+	}	
+	else{
+		No *ultimo = Lista->prox;
+		No *penultimo = Lista;
+		
+		while(ultimo->	prox != NULL){
+			penultimo = ultimo;
+			ultimo = ultimo->	prox;
+		}
+	penultimo->prox = NULL;	
+	puts("NÃ³ excluido com sucesso");
+	tamanho--;
+	return ultimo;	}	
+	}
+
+void insereFim(No *Lista)
+{
+	No *novo = alocaMemoria();
+	novo->prox = NULL;
+
+	if(Vazia(Lista))
+	{
+		Lista->prox = novo;
+	}
 	else
 	{
-		No *tmp;
-		tmp = Lista->prox;
-		printf("lista: ");
-		while(tmp != NULL){
-			printf("|%s", tmp->nome);
-			printf(" %d anos|", tmp->idade);
-			printf("==> ");
-			tmp= tmp->prox;
+		No *tmp = Lista->prox;
+
+		while(tmp->prox != NULL)
+			tmp = tmp->prox;
+
+		tmp->prox = novo;
+	}
+
+	tamanho++;
+	puts("novo elemento inserido com sucesso");
+}
+
+void exibirLista(No *Lista)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+	WORD saved_attributes;
+
+	GetConsoleScreenBufferInfo(hConsole,&consoleInfo);
+	saved_attributes = consoleInfo.wAttributes;
+
+	if(Vazia(Lista))
+	{
+		puts("\n======> Lista vazia!");
+	}
+	else
+	{
+		No *tmp = Lista->prox;
+
+		printf("Lista: ");
+
+		while(tmp != NULL)
+		{
+			printf("%s | %d", tmp->nome, tmp->idade);
+
+			SetConsoleTextAttribute(hConsole,11);
+			printf(" ===> ");
+			SetConsoleTextAttribute(hConsole,saved_attributes);
+
+			tmp = tmp->prox;
 		}
-	}	 	
- }
- 
- 
- 
- 
- 
- 
+	}
+}
