@@ -2,7 +2,7 @@
 	Name: todosMetodos
 	Author: Fabio.Fonts 
 	Date: 17/11/25 08:50
-	Description: nesteprograma iremos apresentar o desempenho de todos os mÈtodos de ordenaÁ„0
+	Description: nesteprograma iremos apresentar o desempenho de todos os m√©todos de ordena√ß√£0
 */
  #include<windows.h>
  #include<stdio.h>
@@ -12,13 +12,15 @@
  
    void bubblesort(int *, int);
    void selectionSort(int *, int);
+   void insertionSort(int*, int);
+   
  main()
  {
-  // --- VARI¡VEIS DE TEMPO ---
+  // --- VARI√ÅVEIS DE TEMPO ---
 	 clock_t t_inicio, t_fim;
 	 double tempo_bubble, tempo_selection;
 
-   	 //sess„o de cores
+   	 //sess√£o de cores
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -38,7 +40,7 @@
 	 		
 	int vet2[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
 
-	// --- CRON‘METRO BUBBLE ---
+	// --- CRON√îMETRO BUBBLE ---
 	t_inicio = clock(); 
 	bubblesort(vet2, tam);	
 	t_fim = clock();
@@ -48,7 +50,7 @@
  	 puts("\n \n		bubble sort");
 	 puts("\n =====>>>>");
 	 	SetConsoleTextAttribute(hConsole, 7);			
-	 printf("\n\nquantidade de comparaÁıes: "); 
+	 printf("\n\nquantidade de compara√ß√µes: "); 
 	  SetConsoleTextAttribute(hConsole, 11);
 	   printf("[%d]", comp);
 	    SetConsoleTextAttribute(hConsole, 7);
@@ -56,13 +58,13 @@
 	 SetConsoleTextAttribute(hConsole, 11);
 	 printf("[%d]", trocas);
 	 SetConsoleTextAttribute(hConsole, 7);
-	 printf("\nTempo: %f segundos", tempo_bubble); // Exibe o tempo
+	 printf("\n\nTempo: %.5f segundos", tempo_bubble); // Exibe o tempo
 	
 	// Resetando contadores
 	trocas= 0, comp=0;
 	int vet3[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
 
-	// --- CRON‘METRO SELECTION ---
+	// --- CRON√îMETRO SELECTION ---
 	t_inicio = clock();
 	selectionSort(vet3, tam);
 	t_fim = clock();
@@ -72,7 +74,7 @@
 	 puts("\n\n		selection sort");
 	 puts("\n=====>>>>");		
 	 	SetConsoleTextAttribute(hConsole, 7);	
-	 printf("\n\nquantidade de comparaÁıes: "); 
+	 printf("\n\nquantidade de compara√ß√µes: "); 
 	  SetConsoleTextAttribute(hConsole, 14);
 	   printf("[%d]", comp);
 	    SetConsoleTextAttribute(hConsole, 7);
@@ -80,18 +82,42 @@
 	 SetConsoleTextAttribute(hConsole, 14);
 	 printf("[%d]", trocas);
 	 SetConsoleTextAttribute(hConsole, 7);
-	 printf("\nTempo: %f segundos", tempo_selection); // Exibe o tempo
+	 printf("\n\nTempo: %.5f segundos", tempo_selection); // Exibe o tempo
+	 
+	 	// Resetando contadores
+	trocas= 0, comp=0;
+	int vet4[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
+
+	// --- CRON√îMETRO INSERTION ---
+	t_inicio = clock();
+	insertionSort(vet4, tam);
+	t_fim = clock();
+	tempo_selection = ((double)(t_fim - t_inicio)) / CLOCKS_PER_SEC;
+
+	 SetConsoleTextAttribute(hConsole, 15);	
+	 puts("\n\n		insertion sort");
+	 puts("\n=====>>>>");		
+	 	SetConsoleTextAttribute(hConsole, 7);	
+	 printf("\n\nquantidade de compara√ß√µes: "); 
+	  SetConsoleTextAttribute(hConsole, 3);
+	   printf("[%d]", comp);
+	    SetConsoleTextAttribute(hConsole, 7);
+	 printf("\n\nquantidade de trocas:"); 
+	 SetConsoleTextAttribute(hConsole, 3);
+	 printf("[%d]", trocas);
+	 SetConsoleTextAttribute(hConsole, 15);
+	 printf("\n\nTempo: %.5f segundos", tempo_selection); // Exibe o tempo
  } //fim do progama
  void selectionSort(int *S, int tam){
  	
  	int i, j, menor, chave, aux;
-	 //laÁo externo que itera do inÌcio ao fim do vetor
+	 //la√ßo externo que itera do in√≠cio ao fim do vetor
  	for(i=0; i < tam-1; i++){
  		
- 		//assume que o menor elemento est· na primeira posiÁ„o do vetor
+ 		//assume que o menor elemento est√° na primeira posi√ß√£o do vetor
  		chave = i;
  		menor = i+1;
- 		//laÁo interno para descobrir quem È o menor el
+ 		//la√ßo interno para descobrir quem √© o menor el
  			for(j= i+1; j < tam; j++){
  				if(S[j] < S[menor])
  					menor = j;
@@ -100,7 +126,7 @@
 		 	}
 		 	comp++;
 		 	
-		 //troca o menor elemento encontrando pelo elemento que est· na chave
+		 //troca o menor elemento encontrando pelo elemento que est√° na chave
 		 if(S[menor] < S[chave]){
 		 	aux = S[chave];
 		 	S[chave] = S[menor];
@@ -131,3 +157,21 @@
   
   	
   }
+  void insertionSort(int *V, int tam){
+ 	
+ 	int i, j, chave;
+ 	
+ 	for(i=1; i < tam; i++){
+ 		chave = V[i];
+ 		j = i -1;
+ 		while(j>=0 && chave < V[j]){
+ 			V[j+1] = V[j];
+ 			j--;
+ 			comp++;
+ 			trocas++;
+		 }
+		 V[j+1]= chave;
+		 trocas++;
+	 }
+ }
+ 
