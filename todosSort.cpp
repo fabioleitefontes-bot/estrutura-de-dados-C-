@@ -8,7 +8,7 @@
  #include<stdio.h>
  #include<locale.h>
  #include<time.h>
- int trocas = 0, comp = 0;
+ long int trocas = 0, comp = 0;
  
    void bubblesort(int *, int);
    void selectionSort(int *, int);
@@ -28,21 +28,32 @@
     WORD cor_original = csbi.wAttributes; 
     
     setlocale(LC_ALL,"portuguese");
-	int vet[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
+	//int vet[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
+	int vet[100000];
+	int vet2[100000];
+	int vet3[100000];
+	
+	
 	int tam = sizeof(vet)/sizeof(int);
+	srand(time(NULL));
+	for(int i =0; i<tam; i++){
+		vet[i] = rand()%10000;
+		vet2[i] = rand()%10000;
+		vet3[i] = rand()%10000;
+}
 	
 	puts("vetor original\n");
 	 	for(int i=0; i < tam; i++){
 	 			SetConsoleTextAttribute(hConsole, 10);
-	 		printf("[%d]", vet[i]);
+	 		printf("[%lld]", vet[i]);
 	 			SetConsoleTextAttribute(hConsole, 7);
 	 		}
 	 		
-	int vet2[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
+	//int vet2[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
 
 	// --- CRONÔMETRO BUBBLE ---
 	t_inicio = clock(); 
-	bubblesort(vet2, tam);	
+	bubblesort(vet, tam);	
 	t_fim = clock();
 	tempo_bubble = ((double)(t_fim - t_inicio)) / CLOCKS_PER_SEC;
 
@@ -52,21 +63,21 @@
 	 	SetConsoleTextAttribute(hConsole, 7);			
 	 printf("\n\nquantidade de comparações: "); 
 	  SetConsoleTextAttribute(hConsole, 11);
-	   printf("[%d]", comp);
+	   printf("[%lld]", comp);
 	    SetConsoleTextAttribute(hConsole, 7);
 	 printf("\n\nquantidade de trocas:"); 
 	 SetConsoleTextAttribute(hConsole, 11);
-	 printf("[%d]", trocas);
+	 printf("[%lld]", trocas);
 	 SetConsoleTextAttribute(hConsole, 7);
 	 printf("\n\nTempo: %.5f segundos", tempo_bubble); // Exibe o tempo
 	
 	// Resetando contadores
 	trocas= 0, comp=0;
-	int vet3[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
+	//int vet3[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
 
 	// --- CRONÔMETRO SELECTION ---
 	t_inicio = clock();
-	selectionSort(vet3, tam);
+	selectionSort(vet2, tam);
 	t_fim = clock();
 	tempo_selection = ((double)(t_fim - t_inicio)) / CLOCKS_PER_SEC;
 
@@ -76,21 +87,21 @@
 	 	SetConsoleTextAttribute(hConsole, 7);	
 	 printf("\n\nquantidade de comparações: "); 
 	  SetConsoleTextAttribute(hConsole, 14);
-	   printf("[%d]", comp);
+	   printf("[%lld]", comp);
 	    SetConsoleTextAttribute(hConsole, 7);
 	 printf("\n\nquantidade de trocas:"); 
 	 SetConsoleTextAttribute(hConsole, 14);
-	 printf("[%d]", trocas);
+	 printf("[%lld]", trocas);
 	 SetConsoleTextAttribute(hConsole, 7);
 	 printf("\n\nTempo: %.5f segundos", tempo_selection); // Exibe o tempo
 	 
 	 	// Resetando contadores
 	trocas= 0, comp=0;
-	int vet4[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
+	//int vet4[] = {17, 38, 12, 2, 44, 25, 19, -4, 30, 10};
 
 	// --- CRONÔMETRO INSERTION ---
 	t_inicio = clock();
-	insertionSort(vet4, tam);
+	insertionSort(vet3, tam);
 	t_fim = clock();
 	tempo_selection = ((double)(t_fim - t_inicio)) / CLOCKS_PER_SEC;
 
@@ -100,11 +111,11 @@
 	 	SetConsoleTextAttribute(hConsole, 7);	
 	 printf("\n\nquantidade de comparações: "); 
 	  SetConsoleTextAttribute(hConsole, 3);
-	   printf("[%d]", comp);
+	   printf("[%lld]", comp);
 	    SetConsoleTextAttribute(hConsole, 7);
 	 printf("\n\nquantidade de trocas:"); 
 	 SetConsoleTextAttribute(hConsole, 3);
-	 printf("[%d]", trocas);
+	 printf("[%lld]", trocas);
 	 SetConsoleTextAttribute(hConsole, 15);
 	 printf("\n\nTempo: %.5f segundos", tempo_selection); // Exibe o tempo
  } //fim do progama
