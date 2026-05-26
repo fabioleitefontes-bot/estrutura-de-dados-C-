@@ -1,0 +1,124 @@
+/*
+	Name: insectionsort
+	Author: Fabio.Fonts 
+	Date: 07/04/26 08:50
+	Description: programa para demonstrar a aplicação do método selection sort
+*/
+ #include<windows.h>
+ #include<stdio.h>
+ #include<locale.h>
+ #include<time.h>
+ 
+ //prototipação usando long long int (64 bits garantidos no Windows)
+ void insertionSort(long long int*, long long int);
+ long long int trocas, comp1, comp = 0;
+ long long int buscaBinaria(long long int*, long long int, long long int);
+ 
+ HANDLE hConsole;
+ CONSOLE_SCREEN_BUFFER_INFO csbi;
+ WORD cor_original;
+ 
+ main()//inicio do main
+ {
+	 setlocale(LC_ALL,"portuguese");
+	 //sessão de cores
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	 GetConsoleScreenBufferInfo(hConsole, &csbi);
+	 WORD cor_original = csbi.wAttributes; 
+	 
+	 	SetConsoleTextAttribute(hConsole, 15);//negrito
+	 	SetConsoleTextAttribute(hConsole, 7);
+ 
+	 // Vetor de 100 mil elementos
+	 long long int vet[100000];
+	 long long int tam = sizeof(vet)/sizeof(long long int);
+	
+	 srand(time(NULL));
+	 for(long long int i = 0; i < tam; i++){
+		 vet[i] = rand()%1000000;}
+	
+	 long long int x;
+	 	SetConsoleTextAttribute(hConsole, 15);//negrito
+	 	printf("vetor original:\n");
+	 	SetConsoleTextAttribute(hConsole, 2);
+	 for(x = 0; x < tam; x++)
+	 	printf("[%lld]", vet[x]);
+	 SetConsoleTextAttribute(hConsole, 15); 
+ insertionSort(vet, tam);
+	
+	 	printf("\n\nvetor ordenado com o insertion sort:\n");
+	 	SetConsoleTextAttribute(hConsole, 11);
+	 	
+	 for(x = 0; x < tam; x++)
+	 	printf("[%lld]", vet[x]);	
+	 	
+ 
+ SetConsoleTextAttribute(hConsole, 15);	
+	 printf("\n\nquantidade de comparações: "); 
+	   SetConsoleTextAttribute(hConsole, 14);
+	    printf("[%lld]", comp); // %lld para long long
+	     SetConsoleTextAttribute(hConsole, 15);
+	 printf("\n\nquantidade de trocas:"); 
+	 SetConsoleTextAttribute(hConsole, 14);
+	 printf("[%lld]", trocas); // %lld para long long
+ 	
+ 		 SetConsoleTextAttribute(hConsole, 8);
+ 	long long int elem = 0;
+ 	printf("\n\ndigite o elemento para localizar: ");
+ 	SetConsoleTextAttribute(hConsole, 15);
+ 	scanf("%lld", &elem); // %lld no scanf também
+ 	
+ 	buscaBinaria(vet, tam, elem);
+ 	
+ 	
+ 		SetConsoleTextAttribute(hConsole, 15);
+ 	 printf("\n\nquantidade de comparações busca binária: "); 
+	 	SetConsoleTextAttribute(hConsole, 14);
+	 printf("[%lld]", comp1);
+		 SetConsoleTextAttribute(hConsole, 15);
+ 	
+ } //fim do programa
+ 
+ void insertionSort(long long int *V, long long int tam){
+ 	
+ 	long long int i, j, chave;
+ 	
+ 	for(i = 1; i < tam; i++){
+ 		chave = V[i];
+ 		j = i - 1;
+ 		while(j >= 0 && chave < V[j]){
+ 			V[j+1] = V[j];
+ 			j--;
+ 			comp++;
+ 			trocas++;
+		 }
+		 V[j+1] = chave;
+		 trocas++;
+	 }
+ }
+ 
+ long long int buscaBinaria(long long int *V, long long int tam, long long int elem){
+ 	
+ 	long long int inicio, meio, fim;
+ 	
+ 	inicio = 0;
+ 	fim = tam - 1;
+ 	while(inicio <= fim){
+	 	meio = (inicio + fim) / 2; 	
+			if(V[meio] != elem){
+				comp1++;
+				if(V[meio] > elem){
+					fim = meio - 1;
+				}
+				else{
+					inicio = meio + 1;
+				}}
+			else{
+					printf("\nelemento encontrado na posição: ");
+					 SetConsoleTextAttribute(hConsole, 14);
+	    				printf("[%lld]", meio); 
+					comp1++;
+					break;
+				}
+		}
+ }
